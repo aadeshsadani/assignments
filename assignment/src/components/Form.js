@@ -4,9 +4,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Table from 'react-bootstrap/Table'
-// import ShowRecord from './Table';
+import ShowRecord from './Table';
 export default function UserInputForm(props) {
     
     const [name, setName] = useState({
@@ -14,8 +12,8 @@ export default function UserInputForm(props) {
         email: '',
         age: ''
     });
-    
     const [data, setData] = useState([]);
+    // const [len, setLen] = useState(data.length);
     const getFormData = (e) => {
         e.preventDefault();
         if(e.target.name === 'name'){
@@ -41,6 +39,7 @@ export default function UserInputForm(props) {
     const submitHanle = (event) => {
         event.preventDefault();
         setData([...data,name])
+        // setLen(data.length);
         setName({
             name: '',
             email: '',
@@ -84,28 +83,7 @@ export default function UserInputForm(props) {
                 </Col>
             </Row>
         </Form>
-        <Table>            
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Age</th>
-                </tr>
-            </thead>
-            <tbody>
-                {   
-                    data.map((record, index) =>
-                        <tr key={index}>
-                            <td>{index}</td>
-                            <td>{record.name}</td>
-                            <td>{record.email}</td>
-                            <td>{record.age}</td>
-                        </tr>
-                    )
-                }
-            </tbody>
-        </Table>
+        <ShowRecord record={data}/>
     </>
   )
 }
