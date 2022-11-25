@@ -30,5 +30,6 @@ export default function TableData(props) {
                 }
             </tbody>
         </Table>
+        
   )
 }
