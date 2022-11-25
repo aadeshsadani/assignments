@@ -4,22 +4,25 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import UserRecordTable from './Table';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Table from 'react-bootstrap/Table'
+// import ShowRecord from './Table';
 export default function UserInputForm(props) {
-    const [formData, setFormData] = useState();
+    
     const [name, setName] = useState({
         name: '',
         email: '',
         age: ''
     });
     
+    const [data, setData] = useState([]);
     const getFormData = (e) => {
         e.preventDefault();
         if(e.target.name === 'name'){
             setName({
                 name: e.target.value,
-                email: ' ',
-                age: ' '
+                email: name.email !== ' ' ? name.email : ' ',
+                age: name.age !== ' ' ? name.age : ' '
             });
         }else if(e.target.name === 'email'){
             setName({
@@ -35,14 +38,15 @@ export default function UserInputForm(props) {
             });
         }
     }
-    const submitHanle = (event, uesrRecord) => {
+    const submitHanle = (event) => {
         event.preventDefault();
-        setFormData({...name});
+        setData([...data,name])
         setName({
             name: '',
             email: '',
             age: ''
         });
+        // console.log(name);
     }
   return (
     <>
@@ -74,12 +78,34 @@ export default function UserInputForm(props) {
             <Row>
                 <Col className='d-flex justify-content-end'>
                     <Button variant="success" type="submit">
+                    {/* <Button variant="success" onClick={submitHanle}> */}
                         Add User
                     </Button>
                 </Col>
             </Row>
         </Form>
-        <UserRecordTable title={formData}/>
+        <Table>            
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                </tr>
+            </thead>
+            <tbody>
+                {   
+                    data.map((record, index) =>
+                        <tr key={index}>
+                            <td>{index}</td>
+                            <td>{record.name}</td>
+                            <td>{record.email}</td>
+                            <td>{record.age}</td>
+                        </tr>
+                    )
+                }
+            </tbody>
+        </Table>
     </>
   )
 }
