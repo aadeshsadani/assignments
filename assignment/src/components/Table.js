@@ -7,22 +7,19 @@ import Table from 'react-bootstrap/Table';
 
 
 export default function TableData(props) {
-    const propsRecord = props.record;
-    // const firstTimeCount = propsRecord.length === 0 ? 1 : propsRecord.length;
-    // const [len, setLen] = useState(firstTimeCount);
-    console.log(propsRecord.length);
+    var propsRecord = props.record;
     const [len, setLen] = useState(propsRecord.length);
+    
     let inlen = propsRecord.length;
+    
     useEffect(()=>{
         setLen(propsRecord.length);
         console.log('coming into effect');
     },[inlen]);
-    //
+    
     const removeValue = (id) => {
         propsRecord.splice(id, 1,);//first param hits on index and second param removes num of items
-        const countArray = propsRecord.length;
-        setLen(countArray);
-        console.log('delete clicked');
+        setLen(propsRecord.length);
     }
     return (
         <Table>

@@ -7,61 +7,44 @@ import Col from 'react-bootstrap/Col';
 import ShowRecord from './Table';
 export default function UserInputForm(props) {
     
-    const [name, setName] = useState({
-        name: '',
-        email: '',
-        age: ''
-    });
-    const [data, setData] = useState([]);
-    // const [len, setLen] = useState(data.length);
-    const getFormData = (e) => {
+    const [name, setName] = useState([]);
+    const submitHanle = (e) => {
         e.preventDefault();
-        if(e.target.name === 'name'){
-            setName({
-                name: e.target.value,
-                email: name.email !== ' ' ? name.email : ' ',
-                age: name.age !== ' ' ? name.age : ' '
-            });
-        }else if(e.target.name === 'email'){
-            setName({
-                name: name.name,
-                email: e.target.value,
-                age: name.age !== ' ' ? name.age : ' '
-            });
-        }else if(e.target.name === 'age'){
-            setName({
-                name: name.name,
-                email: name.email,
-                age: e.target.value
-            });
+        
+        let formData = new FormData(e.currentTarget);
+        let obj = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            age: formData.get('age')
+        };
+        const found = name.find(email => {
+            return email.email === obj.email;
+          });
+        
+        if(found === undefined){
+            setName([...name, obj]);
+        }else{
+            alert('Sorry this email '+obj.email+' is already taken.');
+            return false;
         }
-    }
-    const submitHanle = (event) => {
-        event.preventDefault();
-        setData([...data,name])
-        // setLen(data.length);
-        setName({
-            name: '',
-            email: '',
-            age: ''
-        });
-        // console.log(name);
+
+        document.getElementById('myForm').reset();
     }
   return (
     <>
-        <Form onSubmit={submitHanle}>
+        <Form onSubmit={submitHanle} id="myForm">
             <h1 className='mb-3 text-center border-bottom'>{props.title}</h1>
             <Row>
                 <Col>
                     <Form.Group className="mb-3">
                     <Form.Label htmlFor='name'>Name</Form.Label>
-                    <Form.Control type="text" name='name' id='name' placeholder='Enter name' required onChange={getFormData} value={name.name} />
+                    <Form.Control type="text" name='name' id='name' placeholder='Enter name' required />
                     </Form.Group>
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label htmlFor='email'>Email</Form.Label>
-                        <Form.Control type="email" name='email' id='email' placeholder="Enter email" required onChange={getFormData} value={name.email} />
+                        <Form.Control type="email" name='email' id='email' placeholder="Enter email" required />
                     </Form.Group>
                 </Col>
             </Row>
@@ -70,7 +53,7 @@ export default function UserInputForm(props) {
                 <Col>
                     <Form.Group className='mb-3'>
                         <Form.Label htmlFor='age'>Age</Form.Label>
-                        <Form.Control type='number' name='age' id='age' placeholder='Enter age' required onChange={getFormData} value={name.age} />
+                        <Form.Control type='number' name='age' id='age' placeholder='Enter age' required />
                     </Form.Group>
                 </Col>
             </Row>
@@ -83,7 +66,7 @@ export default function UserInputForm(props) {
                 </Col>
             </Row>
         </Form>
-        <ShowRecord record={data}/>
+        <ShowRecord record={name}/>
     </>
   )
 }
